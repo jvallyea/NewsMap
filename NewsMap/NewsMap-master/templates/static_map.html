@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <title>Points on a map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.31.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.31.0/mapbox-gl.css' rel='stylesheet' />
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 50px;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+      <div class="container">
+                <nav class = "navbar navbar-dark bg-primary">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">Placeholder</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class = "active"><a href="#">Home</a></li>
+                    <li><a href="Description">Description</a></li>
+                </ul>
+                </nav>
+            </div>
+      <div class = "container">
+    <div id='map'>
+    <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2aWRsdWNhMTIzIiwiYSI6ImNqN25tdzMzYTM4dW4zMmt5MmFkcnlsbWMifQ.EjquDuT0detCWLuDzJWxaA'; // replace this with your access token
+    var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/davidluca123/cj7nxnkoeam6r2rmrormm9jov' // replace this with your style URL
+    });
+    // code from the next step will go here
+    </script>
+      </div>
+      </div>
+  </body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+  <title>NewsMap</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <script src='https://api.mapbox.com/mapbox-gl-js/v0.40.0/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v0.40.0/mapbox-gl.css' rel='stylesheet' />
+
+    
+</head>
+<style>
+    body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+h1 {
+  font-size: 20px;
+  line-height: 30px;
+}
+
+h2 {
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 10px6
+}
+
+a {
+  text-decoration: none;
+  color: #2dc4b2;
+}
+
+#console {
+  position: absolute;
+  width: 260px;
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: white;
+}
+.session {
+  margin-bottom: 20px;
+}
+
+.row {
+  height: 12px;
+  width: 100%;
+}
+
+.colors {
+  background: linear-gradient(to right, #ff0000, #ff2a00, #ff3b00, #ff5900, #ff7700, #ff9000, #ffa500, #fff200, #ffff00, #f6ff00, #e5ff00, #d8ff00, #ccff00, #bfff00, #a5ff00, #90ff00, #5dff00);
+  margin-bottom: 2px;
+}
+
+.label {
+  width: 4.6%;
+  display: inline-block;
+  text-align: center;
+}
+
+</style>
+
+<body>
+   
+	<div id='map'></div>
+	<div id='console'>
+  		<h1>View of Company Around the World</h1>
+  		
+  	<div class='session'>
+  <h2>View</h2>
+  <div class='row colors'>
+  </div>
+  <div class='row labels'>
+    <div class='label'>-8</div>
+    <div class='label'>-7</div>
+    <div class='label'>-6</div>
+    <div class='label'>-5</div>
+    <div class='label'>-4</div>
+    <div class='label'>-2</div>
+    <div class='label'>-1</div>
+    <div class='label'>0</div>
+    <div class='label'>1</div>
+    <div class='label'>2</div>
+    <div class='label'>3</div>
+    <div class='label'>4</div>
+    <div class='label'>5</div>
+    <div class='label'>6</div>
+    <div class='label'>7</div>
+    <div class='label'>8</div>
+  </div>
+</div>
+<div class='session' id='sliderbar'>
+  <h2>Day: <label id='active-date'>30</label> <br> Price = <label id='active-price'>0</label></h2>
+  <input id='slider' class='row' type='range' min='1' max='30' step='1' value='30'/>
+</div>
+</div>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2aWRsdWNhMTIzIiwiYSI6ImNqN25tdzMzYTM4dW4zMmt5MmFkcnlsbWMifQ.EjquDuT0detCWLuDzJWxaA';
+
+var map = new mapboxgl.Map({
+  container: 'map', // container element id
+  style: 'mapbox://styles/mapbox/light-v9',
+  center: [-74.0059, 40.7128], // initial map center in [lon, lat]
+  zoom: 1
+});
+
+map.on('load', function() {
+  map.addLayer({
+    id: 'tone',
+    type: 'circle',
+    source: {
+      type: 'geojson',
+      data: "{{url_for('static',filename = 'goldman.geojson')}}" // replace this with the url of your own geojson
+    },
+    paint: {
+      
+      'circle-color': {
+        property: 'tone',
+        stops: [
+          [-8, '#ff0000'],
+          [-7, '#ff2a00'],
+          [-6, '#ff3b00'],
+          [-5, '#ff5900'],
+          [-4, '#ff7700'],
+          [-3, '#ff9000'],
+          [-2, '#ffa500'],
+          [-1, '#fff200'],
+          [0, '#ffff00'],
+          [1, '#f6ff00'],
+          [2, '#e5ff00'],
+          [3, '#d8ff00'],
+          [4, '#ccff00'],
+          [5, '#bfff00'],
+          [6, '#a5ff00'],
+          [7, '#90ff00'],
+          [8, '#5dff00']
+        ]
+      },
+      'circle-opacity': 0.8
+    }
+  }, 'admin-2-boundaries-dispute'); // place the layer beneath this layer in the basemap
+
+  $.ajax({
+dataType: "json",
+url: "{{url_for('static',filename = 'goldman2.geojson')}}",
+success: function(data) {
+  // console.log(JSON.stringify(data))
+  // console.log(data.features.length)
+  var pricearr=[]
+    for (i = 0; i < data.features.length; i++){
+       // console.log(data.features[i].price)
+       pricearr.push(data.features[i].price)
+     }
+document.getElementById('slider').addEventListener('input', function(e) {
+// var rangeInput = document.getElementById("rangeinput").value;
+  // get the current date as an integer
+  var date = parseInt(e.target.value);
+  // var price = parseInt(e.target.value);
+
+  // map.setFilter(layer-name, filter)
+  map.setFilter('tone', ['==', 'date', date]);
+
+  // update text in the UI
+  document.getElementById('active-date').innerText = date;
+  document.getElementById('active-price').innerText = pricearr[date];
+
+});
+}
+});
+  
+});
+
+
+</script>
+
+
+
+
+</html>
